@@ -28,12 +28,21 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
     <div class="main-content">
       <app-sidebar></app-sidebar>
       <div class="content">
-        <div class="form-section">
-          <h2 class="section-title">Add New Medicine</h2>
-          <p class="section-description">
-            Add a new medicine to your inventory by filling out the details below.
-          </p>
 
+      <div class="page-header">
+          <div class="header-left">
+            <button mat-icon-button class="back-button" routerLink="/medicines/list">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="header-content">
+              <h1>Add New Medicine</h1>
+              <p>Add a new medicine to your inventory by filling out the details below.</p>
+            </div>
+          </div>
+        </div>
+
+
+     <div class="form-container">
           <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()" class="medicine-form">
             <div class="form-row">
               <div class="form-group">
@@ -170,7 +179,20 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
       font-weight: 500;
       margin: 0 0 8px 0;
     }
-
+    .page-header .header-left{
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .form-container{
+      background-color: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin: 0;
+      width: 100%;
+    }
+      
     .section-description {
       color: #666;
       font-size: 14px;

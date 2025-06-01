@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header.component';
 import { SidebarComponent } from '../../../components/sidebar/sidebar.component';
 
@@ -27,6 +28,7 @@ interface OrderMedicine {
     MatSelectModule,
     MatIconModule,
     MatRadioModule,
+    RouterModule,
     HeaderComponent,
     SidebarComponent
   ],
@@ -35,12 +37,19 @@ interface OrderMedicine {
     <div class="main-content">
       <app-sidebar></app-sidebar>
       <div class="content">
-        <div class="form-section">
-          <h2 class="section-title">New Order</h2>
-          <p class="section-description">
-            Create a new order by selecting a customer and adding medicines to their order.
-          </p>
+        <div class="page-header">
+          <div class="header-left">
+            <button mat-icon-button class="back-button" routerLink="/orders/list">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="header-content">
+              <h1>New Order</h1>
+              <p>Create a new order by selecting a customer and adding medicines</p>
+            </div>
+          </div>
+        </div>
 
+        <div class="form-container">
           <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="order-form">
             <div class="form-row">
               <div class="form-group">
@@ -134,6 +143,9 @@ interface OrderMedicine {
             </div>
 
             <div class="form-actions">
+              <button mat-button type="button" routerLink="/orders/list">
+                Cancel
+              </button>
               <button mat-flat-button color="primary" type="submit" [disabled]="!orderForm.valid">
                 Create Order
               </button>
@@ -164,6 +176,65 @@ interface OrderMedicine {
       box-sizing: border-box;
       max-width: calc(100vw - 254px);
       overflow-x: hidden;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .back-button {
+          padding: 0;
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          color: rgba(0, 0, 0, 0.54);
+          border-radius: 50%;
+          transition: background-color 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+          }
+
+          &:hover {
+            background-color: #F5F5F5;
+          }
+        }
+
+        .header-content {
+          h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            color: #2C3E50;
+          }
+
+          p {
+            margin: 4px 0 0 0;
+            color: #666;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .form-container {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .form-section {
@@ -245,18 +316,40 @@ interface OrderMedicine {
     }
 
     .form-actions {
-      margin-top: 8px;
-      
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+
       button {
         height: 36px;
-        min-width: 140px;
-        padding: 0 20px;
+        min-width: 120px;
+        padding: 0 16px;
+        font-weight: 500;
         font-size: 14px;
-        background-color: #0B6E4F;
         border-radius: 4px;
+        transition: all 0.2s ease;
 
-        &:disabled {
-          background-color: #e5e7eb;
+        &[mat-button] {
+          color: #666;
+          background: transparent;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.04);
+          }
+        }
+
+        &[color="primary"] {
+          background-color: #0B6E4F;
+
+          &:hover {
+            background-color: #095a41;
+          }
+
+          &:disabled {
+            background-color: rgba(0, 0, 0, 0.12);
+            color: rgba(0, 0, 0, 0.38);
+          }
         }
       }
     }

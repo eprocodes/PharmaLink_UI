@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header.component';
 import { SidebarComponent } from '../../../components/sidebar/sidebar.component';
 
@@ -16,6 +18,8 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
+    RouterModule,
     HeaderComponent,
     SidebarComponent
   ],
@@ -24,58 +28,56 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
     <div class="main-content">
       <app-sidebar></app-sidebar>
       <div class="content">
-        <div class="form-section">
-          <h2 class="section-title">New Customer</h2>
-          <p class="section-description">
-            Add a new pharmacy customer to your network. Fill in the required information below.
-          </p>
-
-          <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="customer-form">
-            <div class="form-row">
-              <div class="form-group">
-                <mat-form-field appearance="outline">
-                  <mat-label>Full Name</mat-label>
-                  <input matInput formControlName="fullName" placeholder="Enter customer's full name">
-                  <mat-error *ngIf="customerForm.get('fullName')?.hasError('required')">
-                    Full name is required
-                  </mat-error>
-                </mat-form-field>
-              </div>
-
-              <div class="form-group">
-                <mat-form-field appearance="outline">
-                  <mat-label>Mobile Number</mat-label>
-                  <input matInput formControlName="mobile" placeholder="Enter mobile number">
-                  <mat-error *ngIf="customerForm.get('mobile')?.hasError('required')">
-                    Mobile number is required
-                  </mat-error>
-                  <mat-error *ngIf="customerForm.get('mobile')?.hasError('pattern')">
-                    Please enter a valid mobile number
-                  </mat-error>
-                </mat-form-field>
-              </div>
+        <div class="page-header">
+          <div class="header-left">
+            <button mat-icon-button class="back-button" routerLink="/customers">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="header-content">
+              <h1>New Customer</h1>
+              <p>Add a new pharmacy customer to your network</p>
             </div>
+          </div>
+        </div>
 
-            <div class="form-row">
-              <div class="form-group">
-                <mat-form-field appearance="outline">
-                  <mat-label>Email Address</mat-label>
-                  <input matInput formControlName="email" placeholder="Enter email address">
-                  <mat-error *ngIf="customerForm.get('email')?.hasError('email')">
-                    Please enter a valid email address
-                  </mat-error>
-                </mat-form-field>
-              </div>
+        <div class="form-container">
+          <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+            <div class="form-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="fullName" placeholder="Enter customer's full name">
+                <mat-error *ngIf="customerForm.get('fullName')?.hasError('required')">
+                  Full name is required
+                </mat-error>
+              </mat-form-field>
 
-              <div class="form-group">
-                <mat-form-field appearance="outline">
-                  <mat-label>Address</mat-label>
-                  <textarea matInput formControlName="address" placeholder="Enter address" rows="1"></textarea>
-                </mat-form-field>
-              </div>
+              <mat-form-field appearance="outline">
+                <mat-label>Mobile Number</mat-label>
+                <input matInput formControlName="mobile" placeholder="Enter mobile number">
+                <mat-error *ngIf="customerForm.get('mobile')?.hasError('required')">
+                  Mobile number is required
+                </mat-error>
+                <mat-error *ngIf="customerForm.get('mobile')?.hasError('pattern')">
+                  Please enter a valid mobile number
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Email Address</mat-label>
+                <input matInput formControlName="email" placeholder="Enter email address">
+                <mat-error *ngIf="customerForm.get('email')?.hasError('email')">
+                  Please enter a valid email address
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Address</mat-label>
+                <textarea matInput formControlName="address" placeholder="Enter address" rows="3"></textarea>
+              </mat-form-field>
             </div>
 
             <div class="form-actions">
+              <button mat-button type="button" routerLink="/customers">Cancel</button>
               <button mat-flat-button color="primary" type="submit" [disabled]="!customerForm.valid">
                 Create Customer
               </button>
@@ -102,72 +104,116 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
     .content {
       flex: 1;
       margin-left: 254px;
-      padding: 16px;
+      padding: 24px;
       box-sizing: border-box;
       max-width: calc(100vw - 254px);
       overflow-x: hidden;
     }
 
-    .form-section {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      margin: 0;
-      width: 100%;
-    }
-
-    .section-title {
-      color: #2C3E50;
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0 0 4px 0;
-    }
-
-    .section-description {
-      color: #666;
-      font-size: 13px;
-      line-height: 1.4;
-      margin: 0 0 16px 0;
-    }
-
-    .customer-form {
+    .page-header {
       display: flex;
-      flex-direction: column;
-      gap: 16px;
-      max-width: 100%;
-    }
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
 
-    .form-row {
-      display: flex;
-      gap: 20px;
-      width: 100%;
-      
-      .form-group {
-        flex: 1;
-        min-width: 0;
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .back-button {
+          padding: 0;
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          color: rgba(0, 0, 0, 0.54);
+          border-radius: 50%;
+          transition: background-color 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+          }
+
+          &:hover {
+            background-color: #F5F5F5;
+          }
+        }
+
+        .header-content {
+          h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            color: #2C3E50;
+          }
+
+          p {
+            margin: 4px 0 0 0;
+            color: #666;
+            font-size: 14px;
+          }
+        }
       }
     }
 
-    .form-group {
-      mat-form-field {
-        width: 100%;
+    .form-container {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+
+      .full-width {
+        grid-column: 1 / -1;
       }
     }
 
     .form-actions {
-      margin-top: 8px;
-      
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+
       button {
         height: 36px;
-        min-width: 140px;
-        padding: 0 20px;
+        min-width: 120px;
+        padding: 0 16px;
+        font-weight: 500;
         font-size: 14px;
-        background-color: #0B6E4F;
         border-radius: 4px;
+        transition: all 0.2s ease;
 
-        &:disabled {
-          background-color: #e5e7eb;
+        &[mat-button] {
+          color: #666;
+          background: transparent;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.04);
+          }
+        }
+
+        &[color="primary"] {
+          background-color: #0B6E4F;
+
+          &:hover {
+            background-color: #095a41;
+          }
+
+          &:disabled {
+            background-color: rgba(0, 0, 0, 0.12);
+            color: rgba(0, 0, 0, 0.38);
+          }
         }
       }
     }
@@ -175,7 +221,7 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
     ::ng-deep {
       .mat-mdc-form-field {
         width: 100%;
-        
+
         .mat-mdc-text-field-wrapper {
           background-color: #f9fafb;
         }
@@ -225,6 +271,11 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
           height: 24px !important;
           min-height: 24px !important;
           padding: 0 !important;
+
+          &[rows="3"] {
+            height: 72px !important;
+            min-height: 72px !important;
+          }
         }
       }
     }
@@ -236,7 +287,7 @@ export class NewCustomerComponent {
   constructor(private fb: FormBuilder) {
     this.customerForm = this.fb.group({
       fullName: ['', Validators.required],
-      mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      mobile: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       email: ['', [Validators.email]],
       address: ['']
     });

@@ -44,92 +44,90 @@ interface Medicine {
     <div class="main-content">
       <app-sidebar></app-sidebar>
       <div class="content">
-        <div class="list-section">
-          <div class="header-actions">
-            <div class="title-section">
-              <h2 class="section-title">Medicines</h2>
-              <p class="section-description">
-                Manage your medicine inventory and view all registered medicines
-              </p>
+        <div class="container">
+          <h2 class="section-title">Medicine Inventory</h2>
+          <p class="section-description">
+            Manage your medicine inventory and view all registered medicines. Track stock levels and pricing at a glance.
+          </p>
+
+          <div class="search-section">
+            <div class="search-actions">
+              <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search medicines</mat-label>
+                <input 
+                  matInput 
+                  [(ngModel)]="searchText" 
+                  (keyup)="applyFilter($event)"
+                  placeholder="Search by name, category, or manufacturer">
+                <mat-icon matSuffix class="search-icon">search</mat-icon>
+              </mat-form-field>
+              <button mat-flat-button color="primary" class="add-medicine-btn" routerLink="/medicines/new">
+                <mat-icon>add</mat-icon>
+                Add New Medicine
+              </button>
             </div>
-            <button mat-flat-button color="primary" routerLink="/medicines/new">
-              <mat-icon>add</mat-icon>
-              Add New Medicine
-            </button>
-          </div>
 
-          <div class="filters">
-            <mat-form-field appearance="outline" class="search-field">
-              <mat-label>Search medicines</mat-label>
-              <input 
-                matInput 
-                [(ngModel)]="searchText" 
-                (keyup)="applyFilter($event)"
-                placeholder="Search by name, category, or manufacturer">
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-          </div>
+            <div class="table-container">
+              <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                  <td mat-cell *matCellDef="let medicine">{{medicine.name}}</td>
+                </ng-container>
 
-          <div class="table-container mat-elevation-z1">
-            <table mat-table [dataSource]="dataSource" matSort>
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-                <td mat-cell *matCellDef="let medicine">{{medicine.name}}</td>
-              </ng-container>
+                <ng-container matColumnDef="genericName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Generic Name</th>
+                  <td mat-cell *matCellDef="let medicine">{{medicine.genericName}}</td>
+                </ng-container>
 
-              <ng-container matColumnDef="genericName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Generic Name</th>
-                <td mat-cell *matCellDef="let medicine">{{medicine.genericName}}</td>
-              </ng-container>
+                <ng-container matColumnDef="category">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+                  <td mat-cell *matCellDef="let medicine">{{medicine.category}}</td>
+                </ng-container>
 
-              <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-                <td mat-cell *matCellDef="let medicine">{{medicine.category}}</td>
-              </ng-container>
+                <ng-container matColumnDef="manufacturer">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Manufacturer</th>
+                  <td mat-cell *matCellDef="let medicine">{{medicine.manufacturer}}</td>
+                </ng-container>
 
-              <ng-container matColumnDef="manufacturer">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Manufacturer</th>
-                <td mat-cell *matCellDef="let medicine">{{medicine.manufacturer}}</td>
-              </ng-container>
+                <ng-container matColumnDef="unitPrice">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price</th>
+                  <td mat-cell *matCellDef="let medicine">₱{{medicine.unitPrice.toFixed(2)}}</td>
+                </ng-container>
 
-              <ng-container matColumnDef="unitPrice">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Price</th>
-                <td mat-cell *matCellDef="let medicine">₱{{medicine.unitPrice.toFixed(2)}}</td>
-              </ng-container>
+                <ng-container matColumnDef="stockQuantity">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+                  <td mat-cell *matCellDef="let medicine" [ngClass]="{'low-stock': medicine.stockQuantity < 10}">
+                    {{medicine.stockQuantity}}
+                  </td>
+                </ng-container>
 
-              <ng-container matColumnDef="stockQuantity">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
-                <td mat-cell *matCellDef="let medicine" [ngClass]="{'low-stock': medicine.stockQuantity < 10}">
-                  {{medicine.stockQuantity}}
-                </td>
-              </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let medicine">
+                    <button mat-icon-button color="primary" (click)="editMedicine(medicine)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteMedicine(medicine)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
 
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let medicine">
-                  <button mat-icon-button color="primary" (click)="editMedicine(medicine)">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="deleteMedicine(medicine)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell" colspan="7">
+                    No medicines found matching the search "{{searchText}}"
+                  </td>
+                </tr>
+              </table>
 
-              <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="7">
-                  No medicines found matching the search "{{searchText}}"
-                </td>
-              </tr>
-            </table>
-
-            <mat-paginator 
-              [pageSizeOptions]="[10, 25, 50, 100]"
-              showFirstLastButtons>
-            </mat-paginator>
+              <mat-paginator 
+                [pageSizeOptions]="[10, 25, 50, 100]"
+                showFirstLastButtons>
+              </mat-paginator>
+            </div>
           </div>
         </div>
       </div>
@@ -151,57 +149,92 @@ interface Medicine {
 
     .content {
       flex: 1;
-      margin-left: 254px;
+      margin-left: 250px;
       padding: 24px;
       box-sizing: border-box;
-      max-width: calc(100vw - 254px);
+      max-width: calc(100vw - 250px);
       overflow-x: hidden;
     }
 
-    .list-section {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .header-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 24px;
-    }
-
-    .title-section {
-      flex: 1;
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     .section-title {
       color: #2C3E50;
       font-size: 24px;
       font-weight: 500;
-      margin: 0 0 8px 0;
+      margin: 0 0 12px 0;
+      text-align: left;
     }
 
     .section-description {
       color: #666;
       font-size: 14px;
       line-height: 1.5;
-      margin: 0;
+      margin: 0 0 24px 0;
+      text-align: left;
+      max-width: 800px;
     }
 
-    .filters {
-      margin-bottom: 16px;
+    .search-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .search-actions {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
     }
 
     .search-field {
-      width: 100%;
-      max-width: 400px;
+      width: 600px;
+      
+      ::ng-deep {
+        .mat-mdc-form-field-flex {
+          background-color: #f9fafb;
+        }
+
+        .mat-mdc-text-field-wrapper {
+          background-color: #f9fafb;
+        }
+      }
+    }
+
+    .add-medicine-btn {
+      height: 56px;
+      padding: 0 24px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 4px;
+      white-space: nowrap;
+      background-color: #0B6E4F;
+      transition: background-color 0.2s ease;
+
+      mat-icon {
+        margin-right: 8px;
+        font-size: 20px;
+      }
+
+      &:hover {
+        background-color: #095a41;
+      }
+    }
+
+    .search-icon {
+      color: #0B6E4F;
     }
 
     .table-container {
       border-radius: 8px;
       overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     table {
@@ -210,32 +243,27 @@ interface Medicine {
 
     .mat-mdc-row:hover {
       background-color: #f5f5f5;
+      cursor: pointer;
     }
 
     .mat-mdc-header-cell {
       background-color: #f8f9fa;
       color: #2C3E50;
       font-weight: 500;
+      padding: 16px;
     }
 
-    .mat-mdc-cell, .mat-mdc-header-cell {
-      padding: 12px 16px;
-    }
-
-    button[mat-flat-button] {
-      height: 36px;
-      padding: 0 20px;
-      font-size: 14px;
-      background-color: #0B6E4F;
-
-      mat-icon {
-        margin-right: 8px;
-      }
+    .mat-mdc-cell {
+      padding: 16px;
     }
 
     .low-stock {
       color: #dc3545;
       font-weight: 500;
+    }
+
+    .mat-mdc-paginator {
+      border-top: 1px solid #eee;
     }
 
     ::ng-deep {

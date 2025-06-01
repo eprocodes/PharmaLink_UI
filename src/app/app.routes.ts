@@ -7,21 +7,36 @@ import { NewMedicineComponent } from './pages/medicines/new-medicine/new-medicin
 import { MedicineListComponent } from './pages/medicines/medicine-list/medicine-list.component';
 import { NewOrderComponent } from './pages/orders/new-order/new-order.component';
 import { OrderListComponent } from './pages/orders/order-list/order-list.component';
+import { OrderDetailsComponent } from './pages/orders/order-details/order-details.component';
 import { ProfileComponent } from './pages/settings/profile/profile.component';
 import { GeneralComponent } from './pages/settings/general/general.component';
 import { CustomerDetailsComponent } from './pages/customers/customer-details/customer-details.component';
+import { EditCustomerComponent } from './pages/customers/edit-customer/edit-customer.component';
 
 export const routes: Routes = [
   { path: 'customers', component: CustomersComponent },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'customers/new', component: NewCustomerComponent },
-  { path: 'customers/:id', component: CustomerDetailsComponent },
+  {
+    path: 'customers',
+    children: [
+      {
+        path: ':id',
+        component: CustomerDetailsComponent
+      },
+      {
+        path: ':id/edit',
+        component: EditCustomerComponent
+      }
+    ]
+  },
   { path: 'medicines/new', component: NewMedicineComponent },
   { path: 'medicines/list', component: MedicineListComponent },
   { path: 'orders/new', component: NewOrderComponent },
   { path: 'orders/list', component: OrderListComponent },
+  { path: 'orders/:id', component: OrderDetailsComponent },
   { path: 'settings/profile', component: ProfileComponent },
   { path: 'settings/general', component: GeneralComponent },
-  { path: '', redirectTo: 'customers', pathMatch: 'full' }
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];

@@ -38,11 +38,12 @@ interface Customer {
       <app-sidebar></app-sidebar>
       <div class="content">
         <div class="container">
+          <h2 class="section-title">Our Customers</h2>
+          <p class="section-description">
+            Find and manage your pharmacy customers quickly. View detailed information and status at a glance.
+          </p>
+          
           <div class="search-section">
-            <h2 class="section-title">Our Customers</h2>
-            <p class="section-description">
-              Find and manage your pharmacy customers quickly. View detailed information and status at a glance.
-            </p>
             <div class="search-actions">
               <mat-form-field appearance="outline" class="search-field">
                 <mat-label>Global Customer Search</mat-label>
@@ -128,13 +129,6 @@ interface Customer {
       width: 100%;
     }
 
-    .search-section {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
     .section-title {
       color: #2C3E50;
       font-size: 24px;
@@ -150,6 +144,14 @@ interface Customer {
       margin: 0 0 24px 0;
       text-align: left;
       max-width: 800px;
+    }
+
+    .search-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-top: 24px;
     }
 
     .search-actions {

@@ -15,8 +15,10 @@ interface CustomerOrder {
   date: string;
   medicines: string[];
   total: number;
-  status: 'pending' | 'processing' | 'delivered' | 'cancelled';
+  status: 'delivered' | 'canceled';
   type: 'delivery' | 'pickup';
+  reminderStatus: 'yes' | 'pending';
+  reminderDueDate?: string;
 }
 
 @Component({
@@ -39,16 +41,25 @@ interface CustomerOrder {
     <div class="main-content">
       <app-sidebar></app-sidebar>
       <div class="content">
+        <div class="page-header">
+          <div class="header-left">
+            <button mat-icon-button class="back-button" routerLink="/customers">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="header-content">
+              <h1>Customer Details</h1>
+              <p>John Doe</p>
+            </div>
+          </div>
+          <button mat-flat-button color="primary" [routerLink]="['edit']">
+            <mat-icon>edit</mat-icon>
+            Edit Details
+          </button>
+        </div>
+
         <div class="customer-details">
           <!-- Customer Info Card -->
           <div class="info-card">
-            <div class="card-header">
-              <h2>Customer Information</h2>
-              <button mat-flat-button color="primary">
-                <mat-icon>edit</mat-icon>
-                Edit Details
-              </button>
-            </div>
             <div class="info-grid">
               <div class="info-item">
                 <label>Full Name</label>
@@ -143,12 +154,34 @@ interface CustomerOrder {
                 </td>
               </ng-container>
 
+              <!-- Reminder Status Column -->
+              <ng-container matColumnDef="reminderStatus">
+                <th mat-header-cell *matHeaderCellDef>Reminder</th>
+                <td mat-cell *matCellDef="let order">
+                  <span class="order-status" [class]="order.reminderStatus">
+                    <ng-container *ngIf="order.reminderStatus === 'yes'">
+                      Sent
+                    </ng-container>
+                    <ng-container *ngIf="order.reminderStatus === 'pending'">
+                      Due {{order.reminderDueDate | date:'shortDate'}}
+                    </ng-container>
+                  </span>
+                </td>
+              </ng-container>
+
               <!-- Actions Column -->
               <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let order">
                   <button mat-icon-button [routerLink]="['/orders', order.orderId]">
                     <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button 
+                    mat-icon-button 
+                    color="primary" 
+                    *ngIf="order.reminderStatus === 'pending'"
+                    matTooltip="Send Reminder">
+                    <mat-icon>send</mat-icon>
                   </button>
                 </td>
               </ng-container>
@@ -189,6 +222,68 @@ interface CustomerOrder {
       overflow-x: hidden;
     }
 
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .back-button {
+          padding: 0;
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          color: rgba(0, 0, 0, 0.54);
+          border-radius: 50%;
+          transition: background-color 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+          }
+
+          &:hover {
+            background-color: #F5F5F5;
+          }
+        }
+
+        .header-content {
+          h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            color: #2C3E50;
+          }
+
+          p {
+            margin: 4px 0 0 0;
+            color: #666;
+            font-size: 14px;
+          }
+        }
+      }
+
+      button[color="primary"] {
+        height: 36px;
+        padding: 0 16px;
+        background-color: #0B6E4F;
+
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+
     .customer-details {
       display: flex;
       flex-direction: column;
@@ -200,28 +295,6 @@ interface CustomerOrder {
       border-radius: 8px;
       padding: 24px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 24px;
-
-        h2 {
-          font-size: 18px;
-          font-weight: 500;
-          color: #2C3E50;
-          margin: 0;
-        }
-
-        button {
-          background-color: #0B6E4F;
-          
-          mat-icon {
-            margin-right: 8px;
-          }
-        }
-      }
     }
 
     .info-grid {
@@ -308,24 +381,24 @@ interface CustomerOrder {
     }
 
     .order-status {
-      &.pending {
-        background-color: #FEF3C7;
-        color: #92400E;
-      }
-
-      &.processing {
-        background-color: #DBEAFE;
-        color: #1E40AF;
-      }
-
       &.delivered {
         background-color: #D1FAE5;
         color: #065F46;
       }
 
-      &.cancelled {
+      &.canceled {
         background-color: #FEE2E2;
         color: #991B1B;
+      }
+
+      &.yes {
+        background-color: #E8F5E9;
+        color: #2E7D32;
+      }
+
+      &.pending {
+        background-color: #FFF3E0;
+        color: #E65100;
       }
     }
 
@@ -343,7 +416,16 @@ interface CustomerOrder {
   `]
 })
 export class CustomerDetailsComponent implements OnInit {
-  displayedColumns: string[] = ['orderId', 'date', 'medicines', 'total', 'type', 'status', 'actions'];
+  displayedColumns: string[] = [
+    'orderId', 
+    'date', 
+    'medicines', 
+    'total', 
+    'type', 
+    'status',
+    'reminderStatus', 
+    'actions'
+  ];
   
   // Sample data - replace with actual data from your service
   orders: CustomerOrder[] = [
@@ -353,23 +435,27 @@ export class CustomerDetailsComponent implements OnInit {
       medicines: ['Amoxicillin 500mg', 'Paracetamol 650mg', 'Vitamin C'],
       total: 45.99,
       status: 'delivered',
-      type: 'delivery'
+      type: 'delivery',
+      reminderStatus: 'yes'
     },
     {
       orderId: 'ORD-002',
       date: '2024-01-18',
       medicines: ['Ibuprofen 400mg', 'Cetirizine'],
       total: 25.50,
-      status: 'processing',
-      type: 'pickup'
+      status: 'delivered',
+      type: 'pickup',
+      reminderStatus: 'pending',
+      reminderDueDate: '2024-02-20'
     },
     {
       orderId: 'ORD-003',
       date: '2024-01-15',
       medicines: ['Omeprazole 20mg'],
       total: 15.99,
-      status: 'pending',
-      type: 'delivery'
+      status: 'canceled',
+      type: 'delivery',
+      reminderStatus: 'yes'
     }
   ];
 

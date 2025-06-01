@@ -1,0 +1,59 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <div class="logo-container">
+        <img src="assets/images/pharamalink-logo-transparent-1.PNG" alt="PharmaLink Logo" class="logo">
+      </div>
+      <h2>Welcome Back!</h2>
+      <p>Enter your credentials to access your account</p>
+    </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <div class="input-group">
+          <label>
+            <i class="fas fa-envelope"></i>
+            Email Address
+          </label>
+          <input 
+            type="email" 
+            formControlName="email"
+            placeholder="name@company.com">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <label>
+            <i class="fas fa-lock"></i>
+            Password
+          </label>
+          <input 
+            type="password" 
+            formControlName="password"
+            placeholder="Enter your password">
+        </div>
+      </div>
+
+      <div class="form-options">
+        <div class="remember-me">
+          <label class="checkbox-container">
+            <input type="checkbox" formControlName="rememberMe">
+            <span class="checkmark"></span>
+            Remember me
+          </label>
+        </div>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="!loginForm.valid">
+        <span>Sign In</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <div class="login-footer">
+        Don't have an account? <a href="#" class="signup-link">Sign up</a>
+      </div>
+    </form>
+  </div>
+</div>

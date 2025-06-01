@@ -1,0 +1,143 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<div class="dashboard-container with-sidebar">
+  <!-- Header Section -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1>Dashboard</h1>
+      <button class="add-customer-btn" (click)="openAddCustomerDialog()">
+        <i class="fas fa-plus"></i>
+        Add New Customer
+      </button>
+    </div>
+  </header>
+
+  <!-- Stats Cards Section -->
+  <div class="stats-cards">
+    <div class="stat-card">
+      <div class="stat-icon customers">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-details">
+        <h3>Total Customers</h3>
+        <p class="stat-number">{{totalCustomers}}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon sales">
+        <i class="fas fa-pills"></i>
+      </div>
+      <div class="stat-details">
+        <h3>Total Sales</h3>
+        <p class="stat-number">{{totalSales}}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon active">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <div class="stat-details">
+        <h3>Active Orders</h3>
+        <p class="stat-number">{{activeOrders}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-section">
+    <div class="chart-card">
+      <h2>Sales Overview</h2>
+      <div class="chart-container">
+        <ngx-charts-line-chart
+          [view]="[700, 300]"
+          [scheme]="colorScheme"
+          [results]="salesData"
+          [gradient]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          xAxisLabel="Period"
+          yAxisLabel="Sales">
+        </ngx-charts-line-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customers Table Section -->
+  <div class="table-section">
+    <div class="table-header">
+      <h2>Customers List</h2>
+      <div class="table-actions">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input 
+            type="text" 
+            placeholder="Search customers..."
+            (keyup)="applyFilter($event)"
+            #input>
+        </div>
+      </div>
+    </div>
+
+    <mat-table [dataSource]="dataSource" matSort class="customers-table">
+      <!-- Customer ID Column -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+        <mat-cell *matCellDef="let customer"> {{customer.id}} </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-cell *matCellDef="let customer"> {{customer.name}} </mat-cell>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+        <mat-cell *matCellDef="let customer"> {{customer.email}} </mat-cell>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+        <mat-cell *matCellDef="let customer">
+          <span class="status-badge" [class]="customer.status.toLowerCase()">
+            {{customer.status}}
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let customer">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editCustomer(customer)">
+              <i class="fas fa-edit"></i>
+              Edit
+            </button>
+            <button mat-menu-item (click)="viewDetails(customer)">
+              <i class="fas fa-eye"></i>
+              View Details
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator 
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page of customers">
+    </mat-paginator>
+  </div>
+</div>

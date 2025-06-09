@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading: boolean = false;
+  hidePassword: boolean = true;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({

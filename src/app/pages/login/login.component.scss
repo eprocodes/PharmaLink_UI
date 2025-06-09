@@ -240,19 +240,23 @@
   }
 }
 
-.login-footer {
+.form-footer {
   text-align: center;
-  color: #6b7280;
-  font-size: 14px;
+  margin-top: 24px;
 
-  .signup-link {
-    color: #0B6E4F;
-    text-decoration: none;
-    font-weight: 500;
-    margin-left: 4px;
+  .signup-text {
+    color: #4B5563;
+    margin: 0;
+    font-size: 14px;
 
-    &:hover {
-      text-decoration: underline;
+    a {
+      color: #0B6E4F;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

@@ -28,7 +28,7 @@ import { RouterModule } from '@angular/router';
           <i class="fas fa-file-medical"></i>
           <span>New Order</span>
         </a>
-        <a routerLink="/tickets/open" class="action-link">
+        <a routerLink="/tickets/new" class="action-link">
           <i class="fas fa-ticket-alt"></i>
           <span>Open Ticket</span>
         </a>
@@ -38,13 +38,9 @@ import { RouterModule } from '@angular/router';
           <i class="fas fa-chevron-down"></i>
         </button>
         <mat-menu #userMenu="matMenu" class="user-menu">
-          <button mat-menu-item>
+          <button mat-menu-item routerLink="/profile">
             <i class="fas fa-user"></i>
             <span>Profile</span>
-          </button>
-          <button mat-menu-item>
-            <i class="fas fa-cog"></i>
-            <span>Settings</span>
           </button>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="logout()">

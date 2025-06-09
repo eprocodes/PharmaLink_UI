@@ -77,7 +77,7 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
             </div>
 
             <div class="form-actions">
-              <button mat-button type="button" routerLink="/customers">Cancel</button>
+              <button mat-button type="button" routerLink="/customers" class="cancel-button">Cancel</button>
               <button mat-flat-button color="primary" type="submit" [disabled]="!customerForm.valid">
                 Create Customer
               </button>
@@ -186,34 +186,17 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
       margin-top: 24px;
 
       button {
-        height: 36px;
         min-width: 120px;
-        padding: 0 16px;
-        font-weight: 500;
-        font-size: 14px;
-        border-radius: 4px;
-        transition: all 0.2s ease;
+        height: 40px;
+      }
 
-        &[mat-button] {
-          color: #666;
-          background: transparent;
+      .cancel-button {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        color: rgba(0, 0, 0, 0.87);
+        background-color: transparent;
 
-          &:hover {
-            background: rgba(0, 0, 0, 0.04);
-          }
-        }
-
-        &[color="primary"] {
-          background-color: #0B6E4F;
-
-          &:hover {
-            background-color: #095a41;
-          }
-
-          &:disabled {
-            background-color: rgba(0, 0, 0, 0.12);
-            color: rgba(0, 0, 0, 0.38);
-          }
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
         }
       }
     }

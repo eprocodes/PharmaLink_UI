@@ -190,9 +190,10 @@ interface Customer {
     }
 
     .container {
-      max-width: 1400px;
-      margin: 0 auto;
+      max-width: 100%;
+      padding-left: 10px;
       width: 100%;
+      padding-top:10px;
     }
 
     .stats-container {

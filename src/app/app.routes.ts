@@ -8,12 +8,15 @@ import { MedicineListComponent } from './pages/medicines/medicine-list/medicine-
 import { NewOrderComponent } from './pages/orders/new-order/new-order.component';
 import { OrderListComponent } from './pages/orders/order-list/order-list.component';
 import { OrderDetailsComponent } from './pages/orders/order-details/order-details.component';
-import { ProfileComponent } from './pages/settings/profile/profile.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { EditProfileComponent } from './pages/profile/edit-profile.component';
+import { ChangePasswordComponent } from './pages/profile/change-password.component';
 import { GeneralComponent } from './pages/settings/general/general.component';
 import { CustomerDetailsComponent } from './pages/customers/customer-details/customer-details.component';
 import { EditCustomerComponent } from './pages/customers/edit-customer/edit-customer.component';
 import { DeliveryTrackerComponent } from './pages/delivery/delivery-tracker/delivery-tracker.component';
 import { OpenTicketComponent } from './pages/tickets/open-ticket/open-ticket.component';
+import { SubscriptionComponent } from './pages/subscription/subscription.component';
 
 export const routes: Routes = [
   { path: 'customers', component: CustomersComponent },
@@ -38,9 +41,12 @@ export const routes: Routes = [
   { path: 'orders/new', component: NewOrderComponent },
   { path: 'orders/list', component: OrderListComponent },
   { path: 'orders/:id', component: OrderDetailsComponent },
-  { path: 'settings/profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'profile/edit', component: EditProfileComponent },
+  { path: 'profile/change-password', component: ChangePasswordComponent },
+  { path: 'subscription', component: SubscriptionComponent },
   { path: 'settings/general', component: GeneralComponent },
   { path: 'delivery/tracker', component: DeliveryTrackerComponent },
   { path: 'tickets/open', component: OpenTicketComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' }
+  { path: '', redirectTo: '/profile', pathMatch: 'full' }
 ];

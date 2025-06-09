@@ -157,8 +157,8 @@ interface Medicine {
     }
 
     .container {
-      max-width: 1400px;
-      margin: 0 auto;
+          max-width: 100%;
+    padding-left: 10px;
       width: 100%;
     }
 

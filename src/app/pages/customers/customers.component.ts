@@ -124,8 +124,8 @@ interface Customer {
     }
 
     .container {
-      max-width: 1400px;
-      margin: 0 auto;
+      max-width: 100%;
+      padding-left: 10px;
       width: 100%;
     }
 
@@ -202,7 +202,7 @@ interface Customer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 1200px;
+      max-width: 100%;
       margin: 0 auto 16px;
       text-align: left;
     }
@@ -217,7 +217,7 @@ interface Customer {
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
       margin-bottom: 32px;
-      max-width: 1200px;
+      max-width: 100%;
       margin: 0 auto;
     }
 

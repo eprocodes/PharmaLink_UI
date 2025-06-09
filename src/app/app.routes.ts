@@ -18,11 +18,13 @@ import { DeliveryTrackerComponent } from './pages/delivery/delivery-tracker/deli
 import { OpenTicketComponent } from './pages/tickets/open-ticket/open-ticket.component';
 import { SubscriptionComponent } from './pages/subscription/subscription.component';
 import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password.component';
+import { NewPasswordComponent } from './pages/auth/new-password/new-password.component';
 
 export const routes: Routes = [
   { path: 'customers', component: CustomersComponent },
   { path: 'login', component: LoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'new-password', component: NewPasswordComponent },
   { path: 'home', component: HomeComponent },
   { path: 'customers/new', component: NewCustomerComponent },
   {

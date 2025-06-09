@@ -12,6 +12,8 @@ import { ProfileComponent } from './pages/settings/profile/profile.component';
 import { GeneralComponent } from './pages/settings/general/general.component';
 import { CustomerDetailsComponent } from './pages/customers/customer-details/customer-details.component';
 import { EditCustomerComponent } from './pages/customers/edit-customer/edit-customer.component';
+import { DeliveryTrackerComponent } from './pages/delivery/delivery-tracker/delivery-tracker.component';
+import { OpenTicketComponent } from './pages/tickets/open-ticket/open-ticket.component';
 
 export const routes: Routes = [
   { path: 'customers', component: CustomersComponent },
@@ -38,5 +40,7 @@ export const routes: Routes = [
   { path: 'orders/:id', component: OrderDetailsComponent },
   { path: 'settings/profile', component: ProfileComponent },
   { path: 'settings/general', component: GeneralComponent },
+  { path: 'delivery/tracker', component: DeliveryTrackerComponent },
+  { path: 'tickets/open', component: OpenTicketComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];

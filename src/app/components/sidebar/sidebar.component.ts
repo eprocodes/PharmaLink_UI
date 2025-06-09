@@ -31,7 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
           </a>
           <a routerLink="/orders/list" routerLinkActive="active" class="nav-item">
             <i class="fas fa-clipboard-list"></i>
-            <span>Order List</span>
+            <span>Orders</span>
           </a>
         </div>
 
@@ -46,6 +46,13 @@ import { MatIconModule } from '@angular/material/icon';
             <span>Medicine List</span>
           </a>
         </div>
+          <div class="nav-group">
+            <div class="nav-group-title">DELIVERY</div>
+            <a routerLink="/delivery/tracker" routerLinkActive="active" class="nav-item">
+              <i class="fas fa-truck"></i>
+              <span>Delivery Tracker</span>
+            </a>
+          </div>
       </nav>
     </aside>
   `,
@@ -72,6 +79,12 @@ import { MatIconModule } from '@angular/material/icon';
       display: flex;
       flex-direction: column;
       gap: 4px;
+    }
+
+    .nav-subgroup {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e7eb;
     }
 
     .nav-group-title {
@@ -121,4 +134,4 @@ import { MatIconModule } from '@angular/material/icon';
     }
   `]
 })
-export class SidebarComponent {} 
+export class SidebarComponent {}

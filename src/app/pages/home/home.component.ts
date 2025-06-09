@@ -12,6 +12,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 interface Customer {
   id: string;
@@ -35,7 +39,11 @@ interface Customer {
     MatInputModule,
     NgxChartsModule,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   template: `
     <app-header></app-header>
@@ -43,6 +51,34 @@ interface Customer {
       <app-sidebar></app-sidebar>
       <div class="content">
         <div class="container">
+          <!-- Date Filters -->
+          <div class="filter-row">
+            <form [formGroup]="filterForm" (ngSubmit)="applyDateFilter()">
+              <mat-form-field appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+
+              <div class="filter-actions">
+                <button mat-raised-button color="primary" type="submit">
+                  Apply
+                </button>
+                <button mat-stroked-button type="button" (click)="resetFilter()">
+                  Reset
+                </button>
+              </div>
+            </form>
+          </div>
+
           <!-- Stats Cards -->
           <div class="stats-container">
             <div class="stat-card">
@@ -51,118 +87,81 @@ interface Customer {
               </div>
               <div class="stat-details">
                 <h3>Total Customers</h3>
-                <p>{{totalCustomers}}</p>
+                <p>156</p>
               </div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon sales">
-                <mat-icon>shopping_cart</mat-icon>
+              <div class="stat-icon pickup">
+                <mat-icon>store</mat-icon>
               </div>
               <div class="stat-details">
-                <h3>Total Sales</h3>
-                <p>{{totalSales}}</p>
+                <h3>Total Picked Up Orders</h3>
+                <p>1,245</p>
               </div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon orders">
+              <div class="stat-icon delivery">
                 <mat-icon>local_shipping</mat-icon>
               </div>
               <div class="stat-details">
-                <h3>Active Orders</h3>
-                <p>{{activeOrders}}</p>
+                <h3>Total Delivery Orders</h3>
+                <p>Coming Soon</p>
               </div>
             </div>
           </div>
 
-          <!-- Sales Chart -->
-          <div class="chart-container">
-            <h2>Sales Overview</h2>
-            <div class="chart-wrapper">
-              <ngx-charts-line-chart
-                [results]="salesData"
-                [xAxis]="true"
-                [yAxis]="true"
-                [legend]="false"
-                [showXAxisLabel]="true"
-                [showYAxisLabel]="true"
-                [xAxisLabel]="'Month'"
-                [yAxisLabel]="'Sales'"
-                [scheme]="colorScheme"
-                [autoScale]="true"
-                [timeline]="false"
-                [animations]="true"
-                [roundDomains]="true"
-                [tooltipDisabled]="false"
-                [gradient]="false"
-                [showGridLines]="true">
-              </ngx-charts-line-chart>
-            </div>
-          </div>
-
-          <!-- Customers Table -->
-          <div class="table-container">
-            <div class="table-header">
-              <h2>Recent Customers</h2>
-              <button mat-raised-button color="primary" (click)="openAddCustomerDialog()">
-                <mat-icon>add</mat-icon>
-                Add Customer
-              </button>
+          <!-- Charts Grid -->
+          <div class="charts-grid">
+            <!-- Customer Growth Chart -->
+            <div class="chart-container">
+              <h2>Customer Growth</h2>
+              <div class="chart-wrapper">
+                <ngx-charts-line-chart
+                  [results]="customerGrowthData"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [legend]="false"
+                  [showXAxisLabel]="true"
+                  [showYAxisLabel]="true"
+                  [xAxisLabel]="'Month'"
+                  [yAxisLabel]="'Customers'"
+                  [scheme]="colorScheme"
+                  [autoScale]="true"
+                  [timeline]="false"
+                  [animations]="true"
+                  [roundDomains]="true"
+                  [tooltipDisabled]="false"
+                  [gradient]="false"
+                  [showGridLines]="true">
+                </ngx-charts-line-chart>
+              </div>
             </div>
 
-            <mat-form-field>
-              <mat-label>Filter</mat-label>
-              <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter" #input>
-            </mat-form-field>
+            <!-- Pickup vs Delivery Chart -->
+            <div class="chart-container">
+              <h2>Pickup vs Delivery Orders</h2>
+              <div class="chart-wrapper">
+                <ngx-charts-pie-chart
+                  [results]="orderComparisonPieData"
+                  [legend]="false"
+                  [labels]="true"
+                  [doughnut]="false"
+                  [scheme]="orderComparisonColorScheme"
+                  [gradient]="false"
+                  [tooltipDisabled]="false">
+                </ngx-charts-pie-chart>
+              </div>
+            </div>
 
-            <table mat-table [dataSource]="dataSource" matSort>
-              <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-                <td mat-cell *matCellDef="let row"> {{row.email}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-                <td mat-cell *matCellDef="let row">
-                  <span class="status-badge" [class.active]="row.status === 'Active'">
-                    {{row.status}}
-                  </span>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef> Actions </th>
-                <td mat-cell *matCellDef="let row">
-                  <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="editCustomer(row)">
-                      <mat-icon>edit</mat-icon>
-                      <span>Edit</span>
-                    </button>
-                    <button mat-menu-item (click)="viewDetails(row)">
-                      <mat-icon>visibility</mat-icon>
-                      <span>View Details</span>
-                    </button>
-                  </mat-menu>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of customers"></mat-paginator>
+            <!-- Delivery Trends Chart (Coming Soon) -->
+            <div class="chart-container coming-soon">
+              <h2>Delivery Trends</h2>
+              <div class="coming-soon-content">
+                <mat-icon>local_shipping</mat-icon>
+                <h3>Coming Soon!</h3>
+                <p>Detailed delivery analytics and trends will be available soon.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -177,16 +176,16 @@ interface Customer {
 
     .main-content {
       display: flex;
-      padding-top: 64px; /* Space for header */
+      padding-top: 64px;
       min-height: 100vh;
       background-color: #f8f9fa;
     }
 
     .content {
       flex: 1;
-      margin-left: 250px; /* Space for sidebar */
+      margin-left: 250px;
       padding: 24px;
-      width: calc(100% - 250px); /* Account for sidebar */
+      width: calc(100% - 250px);
       box-sizing: border-box;
     }
 
@@ -226,14 +225,14 @@ interface Customer {
     }
 
     .stat-icon.customers {
-      background-color: var(--primary-color, #0B6E4F);
+      background-color: #0B6E4F;
     }
 
-    .stat-icon.sales {
+    .stat-icon.pickup {
       background-color: #2196F3;
     }
 
-    .stat-icon.orders {
+    .stat-icon.delivery {
       background-color: #FF9800;
     }
 
@@ -262,97 +261,69 @@ interface Customer {
       margin: 0;
     }
 
-    .chart-container {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
       margin-bottom: 32px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      width: 100%;
-      box-sizing: border-box;
-      height: auto;
-      min-height: 450px;
+
+      .chart-container {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        height: 400px;
+
+        &:last-child {
+          grid-column: 1 / -1;
+          height: 300px;
+        }
+
+        &.coming-soon {
+          .coming-soon-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100% - 60px);
+            text-align: center;
+            color: #666;
+
+            mat-icon {
+              font-size: 48px;
+              width: 48px;
+              height: 48px;
+              margin-bottom: 16px;
+              color: #0B6E4F;
+            }
+
+            h3 {
+              font-size: 20px;
+              margin: 0 0 8px 0;
+              color: #2C3E50;
+            }
+
+            p {
+              font-size: 14px;
+              margin: 0;
+              max-width: 400px;
+            }
+          }
+        }
+
+        h2 {
+          font-size: 18px;
+          color: #2C3E50;
+          margin: 0 0 24px 0;
+          font-weight: 500;
+        }
+      }
     }
 
     .chart-wrapper {
-      height: 400px;
+      height: calc(100% - 42px);
       width: 100%;
       position: relative;
-    }
-
-    .chart-container h2 {
-      font-size: 20px;
-      color: #333;
-      margin-bottom: 24px;
-      font-weight: 500;
-    }
-
-    .table-container {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      width: 100%;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .table-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .table-header h2 {
-      font-size: 20px;
-      color: #333;
-      margin: 0;
-      font-weight: 500;
-    }
-
-    mat-form-field {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    .status-badge {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      background-color: #ffebee;
-      color: #f44336;
-      display: inline-block;
-    }
-
-    .status-badge.active {
-      background-color: #e8f5e9;
-      color: #4caf50;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .mat-mdc-row:hover {
-      background-color: #f5f5f5;
-    }
-
-    .mat-mdc-header-cell {
-      font-weight: 600;
-      color: #666;
-      padding: 12px 16px;
-    }
-
-    .mat-mdc-cell {
-      padding: 12px 16px;
-    }
-
-    mat-paginator {
-      margin-top: 16px;
-      border-top: 1px solid #eee;
     }
 
     ::ng-deep {
@@ -362,51 +333,153 @@ interface Customer {
       .ngx-charts-outer {
         width: 100% !important;
       }
-      .tick text {
-        font-size: 12px;
-        color: #666;
+    }
+
+    .filter-row {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+      form {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-wrap: wrap;
       }
-      .gridline-path {
-        stroke: #eee;
-        stroke-width: 1;
+
+      mat-form-field {
+        flex: 0 1 250px;
+        margin: 0;
+
+        ::ng-deep .mat-mdc-form-field-bottom-align {
+          height: 0;
+        }
       }
-      .line-series .line {
-        stroke-width: 2;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+
+      button {
+        height: 56px;
+        min-width: 100px;
+        margin: 0;
+        padding: 0 16px;
       }
-      .line-highlight {
-        display: none;
+    }
+
+    @media (max-width: 768px) {
+      .filter-row {
+        form {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        mat-form-field {
+          flex: 1 1 auto;
+          width: 100%;
+        }
+
+        .filter-actions {
+          flex-direction: row;
+          justify-content: flex-end;
+          width: 100%;
+          margin-top: 8px;
+        }
       }
     }
   `]
 })
 export class HomeComponent implements OnInit {
-  // Stats
-  totalCustomers: number = 156;
-  totalSales: number = 2489;
-  activeOrders: number = 13;
+  filterForm: FormGroup;
+  originalCustomerGrowthData: any[];
+  originalOrderComparisonPieData: any[];
 
-  // Table
-  displayedColumns: string[] = ['id', 'name', 'email', 'status', 'actions'];
-  dataSource!: MatTableDataSource<Customer>;
+  constructor(private fb: FormBuilder) {
+    this.filterForm = this.fb.group({
+      startDate: [null],
+      endDate: [null]
+    });
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+    // Store original data
+    this.originalCustomerGrowthData = this.customerGrowthData;
+    this.originalOrderComparisonPieData = this.orderComparisonPieData;
+  }
 
-  // Chart
-  salesData: any[] = [
+  applyDateFilter() {
+    const startDate = this.filterForm.get('startDate')?.value;
+    const endDate = this.filterForm.get('endDate')?.value;
+
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    // Filter customer growth data
+    this.customerGrowthData = this.filterDataByDateRange(
+      this.originalCustomerGrowthData,
+      startDate,
+      endDate
+    );
+
+    // For pie chart, we don't need to filter by date as it shows total numbers
+    // But you might want to add date filtering logic here if needed
+  }
+
+  resetFilter() {
+    this.filterForm.reset();
+    this.customerGrowthData = [...this.originalCustomerGrowthData];
+    this.orderComparisonPieData = [...this.originalOrderComparisonPieData];
+  }
+
+  filterDataByDateRange(data: any[], startDate: Date, endDate: Date) {
+    return data.map(item => ({
+      ...item,
+      series: item.series.filter((point: any) => {
+        const pointDate = this.getDateFromMonth(point.name);
+        return pointDate >= startDate && pointDate <= endDate;
+      })
+    }));
+  }
+
+  getDateFromMonth(monthStr: string): Date {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthIndex = months.indexOf(monthStr);
+    return new Date(2024, monthIndex, 1);
+  }
+
+  // Customer Growth Data
+  customerGrowthData = [
     {
-      name: 'Sales',
+      name: 'Total Customers',
       series: [
-        { name: 'Jan', value: 1200 },
-        { name: 'Feb', value: 900 },
-        { name: 'Mar', value: 1500 },
-        { name: 'Apr', value: 1800 },
-        { name: 'May', value: 1200 },
-        { name: 'Jun', value: 2000 }
+        { name: 'Jan', value: 120 },
+        { name: 'Feb', value: 132 },
+        { name: 'Mar', value: 141 },
+        { name: 'Apr', value: 148 },
+        { name: 'May', value: 152 },
+        { name: 'Jun', value: 156 }
       ]
     }
   ];
 
+  // Order Comparison Pie Data
+  orderComparisonPieData = [
+    {
+      name: 'Pickup Orders',
+      value: 1245
+    },
+    {
+      name: 'Delivery Orders',
+      value: 892
+    }
+  ];
+
+  // Color Schemes
   colorScheme: Color = {
     name: 'custom',
     selectable: true,
@@ -414,45 +487,14 @@ export class HomeComponent implements OnInit {
     domain: ['#0B6E4F']
   };
 
-  customers: Customer[] = [
-    { id: '1', name: 'John Smith', email: 'john@example.com', status: 'Active' },
-    { id: '2', name: 'Sarah Johnson', email: 'sarah@example.com', status: 'Active' },
-    { id: '3', name: 'Michael Davis', email: 'michael@example.com', status: 'Inactive' },
-    { id: '4', name: 'Emma Wilson', email: 'emma@example.com', status: 'Active' },
-    { id: '5', name: 'Tom Brown', email: 'tom@example.com', status: 'Active' },
-  ];
+  orderComparisonColorScheme: Color = {
+    name: 'custom',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#2196F3', '#FF9800']
+  };
 
-  constructor() {
-    this.dataSource = new MatTableDataSource(this.customers);
-  }
-
-  ngOnInit(): void {
-    // Initialize the table data
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  openAddCustomerDialog() {
-    // TODO: Implement add customer dialog
-    console.log('Open add customer dialog');
-  }
-
-  editCustomer(customer: Customer) {
-    // TODO: Implement edit customer
-    console.log('Edit customer:', customer);
-  }
-
-  viewDetails(customer: Customer) {
-    // TODO: Implement view customer details
-    console.log('View customer details:', customer);
+  ngOnInit() {
+    // Any initialization logic
   }
 }

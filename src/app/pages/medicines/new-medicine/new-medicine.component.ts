@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from '../../../components/header/header.component';
 import { SidebarComponent } from '../../../components/sidebar/sidebar.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-new-medicine',
@@ -21,15 +22,15 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
     MatSelectModule,
     MatIconModule,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    RouterModule
   ],
   template: `
     <app-header></app-header>
     <div class="main-content">
       <app-sidebar></app-sidebar>
       <div class="content">
-
-      <div class="page-header">
+        <div class="page-header">
           <div class="header-left">
             <button mat-icon-button class="back-button" routerLink="/medicines/list">
               <mat-icon>arrow_back</mat-icon>
@@ -41,8 +42,7 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
           </div>
         </div>
 
-
-     <div class="form-container">
+        <div class="form-container">
           <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()" class="medicine-form">
             <div class="form-row">
               <div class="form-group">
@@ -132,6 +132,9 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
             </div>
 
             <div class="form-actions">
+              <button mat-stroked-button type="button" routerLink="/medicines/list" class="cancel-button">
+                Cancel
+              </button>
               <button mat-flat-button color="primary" type="submit" [disabled]="!medicineForm.valid">
                 Add Medicine
               </button>
@@ -164,6 +167,65 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
       overflow-x: hidden;
     }
 
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .back-button {
+          padding: 0;
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          color: rgba(0, 0, 0, 0.54);
+          border-radius: 50%;
+          transition: background-color 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+          }
+
+          &:hover {
+            background-color: #F5F5F5;
+          }
+        }
+
+        .header-content {
+          h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            color: #2C3E50;
+          }
+
+          p {
+            margin: 4px 0 0 0;
+            color: #666;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .form-container {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
     .form-section {
       background: white;
       border-radius: 12px;
@@ -179,20 +241,7 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
       font-weight: 500;
       margin: 0 0 8px 0;
     }
-    .page-header .header-left{
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .form-container{
-      background-color: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      margin: 0;
-      width: 100%;
-    }
-      
+
     .section-description {
       color: #666;
       font-size: 14px;
@@ -234,14 +283,25 @@ import { SidebarComponent } from '../../../components/sidebar/sidebar.component'
 
     .form-actions {
       margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
       
       button {
-        height: 36px;
+        height: 40px;
         min-width: 140px;
         padding: 0 20px;
         font-size: 14px;
-        background-color: #0B6E4F;
         border-radius: 4px;
+      }
+
+      .cancel-button {
+        color: #666;
+        border-color: #ddd;
+      }
+
+      .mat-flat-button[color="primary"] {
+        background-color: #0B6E4F;
 
         &:disabled {
           background-color: #e5e7eb;

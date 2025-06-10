@@ -46,13 +46,14 @@ import { MatIconModule } from '@angular/material/icon';
             <span>Medicine List</span>
           </a>
         </div>
-          <div class="nav-group">
-            <div class="nav-group-title">DELIVERY</div>
-            <a routerLink="/delivery/tracker" routerLinkActive="active" class="nav-item">
-              <i class="fas fa-truck"></i>
-              <span>Delivery Tracker</span>
-            </a>
-          </div>
+
+        <div class="nav-group">
+          <div class="nav-group-title">DELIVERY</div>
+          <a routerLink="/delivery/tracker" routerLinkActive="active" class="nav-item">
+            <i class="fas fa-truck"></i>
+            <span>Delivery Tracker</span>
+          </a>
+        </div>
       </nav>
     </aside>
   `,

@@ -19,6 +19,7 @@ import { OpenTicketComponent } from './pages/tickets/open-ticket/open-ticket.com
 import { SubscriptionComponent } from './pages/subscription/subscription.component';
 import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password.component';
 import { NewPasswordComponent } from './pages/auth/new-password/new-password.component';
+import { NotificationBroadcastComponent } from './pages/notification/notification-broadcast.component';
 
 export const routes: Routes = [
   { path: 'customers', component: CustomersComponent },
@@ -52,5 +53,6 @@ export const routes: Routes = [
   { path: 'settings/general', component: GeneralComponent },
   { path: 'delivery/tracker', component: DeliveryTrackerComponent },
   { path: 'tickets/open', component: OpenTicketComponent },
+  { path: 'notification/broadcast', component: NotificationBroadcastComponent },
   { path: '', redirectTo: '/profile', pathMatch: 'full' }
 ];

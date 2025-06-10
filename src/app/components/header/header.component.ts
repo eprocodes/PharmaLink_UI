@@ -28,7 +28,11 @@ import { RouterModule } from '@angular/router';
           <i class="fas fa-file-medical"></i>
           <span>New Order</span>
         </a>
-        <a routerLink="/tickets/new" class="action-link">
+        <a routerLink="/notification/broadcast" class="action-link">
+          <i class="fas fa-bullhorn"></i>
+          <span>Notification Broadcast</span>
+        </a>
+        <a routerLink="/tickets/open" class="action-link">
           <i class="fas fa-ticket-alt"></i>
           <span>Open Ticket</span>
         </a>

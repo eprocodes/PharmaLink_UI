@@ -54,5 +54,5 @@ export const routes: Routes = [
   { path: 'delivery/tracker', component: DeliveryTrackerComponent },
   { path: 'tickets/open', component: OpenTicketComponent },
   { path: 'notification/broadcast', component: NotificationBroadcastComponent },
-  { path: '', redirectTo: '/profile', pathMatch: 'full' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

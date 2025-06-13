@@ -24,17 +24,13 @@ import { RouterModule } from '@angular/router';
         <img src="assets/images/pharamalink-logo-transparent-1.PNG" alt="PharmaLink Logo" class="logo">
       </div>
       <div class="header-right">
-        <a routerLink="/orders/new" class="action-link">
-          <i class="fas fa-file-medical"></i>
-          <span>New Order</span>
-        </a>
         <a routerLink="/notification/broadcast" class="action-link">
           <i class="fas fa-bullhorn"></i>
-          <span>Notification Broadcast</span>
+          <span class="color-gray">Notification Broadcast</span>
         </a>
         <a routerLink="/tickets/open" class="action-link">
           <i class="fas fa-ticket-alt"></i>
-          <span>Open Ticket</span>
+          <span class="color-gray">Open Ticket</span>
         </a>
         <button mat-button [matMenuTriggerFor]="userMenu" class="user-profile-btn">
           <i class="fas fa-user-circle"></i>
@@ -103,7 +99,9 @@ import { RouterModule } from '@angular/router';
         background: #ecfdf5;
       }
     }
-
+    .color-gray{
+      color:#666
+      }
     .user-profile-btn {
       display: flex;
       align-items: center;

@@ -13,25 +13,25 @@ import { MatIconModule } from '@angular/material/icon';
       <nav class="nav-menu">
         <div class="nav-group">
           <div class="nav-group-title">MAIN MENU</div>
+           <a routerLink="/home" routerLinkActive="active" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
           <a routerLink="/customers" routerLinkActive="active" class="nav-item">
             <i class="fas fa-users"></i>
             <span>Our Customers</span>
-          </a>
-          <a routerLink="/home" routerLinkActive="active" class="nav-item">
-            <i class="fas fa-home"></i>
-            <span>Dashboard</span>
           </a>
         </div>
 
         <div class="nav-group">
           <div class="nav-group-title">ORDERS</div>
-          <a routerLink="/orders/new" routerLinkActive="active" class="nav-item">
-            <i class="fas fa-file-medical"></i>
-            <span>New Order</span>
-          </a>
           <a routerLink="/orders/list" routerLinkActive="active" class="nav-item">
             <i class="fas fa-clipboard-list"></i>
             <span>Orders</span>
+          </a>
+          <a routerLink="/orders/new" routerLinkActive="active" class="nav-item">
+            <i class="fas fa-file-medical"></i>
+            <span>New Order</span>
           </a>
         </div>
 

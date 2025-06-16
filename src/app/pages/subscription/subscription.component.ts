@@ -90,16 +90,23 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
       background-color: #f8f9fa;
     }
 
-    .content {
+   .content {
       flex: 1;
+      margin-left: 245px;
+      margin-top: 55px;
+      padding: 25px 25px 25px 35px;
       box-sizing: border-box;
-      max-width: calc(100vw - 254px);
-      overflow-x: hidden;
-    }
+      max-width: calc(100vw - 245px);
+      transition: margin-left 0.3s ease, max-width 0.3s ease;
+
+      :host-context(.sidebar-collapsed) & {
+        margin-left: 55px;
+        max-width: calc(100vw - 55px);
+      }
+  }
 
     .container {
       max-width: 100%;
-      padding-left: 10px;
       width: 100%;
     }
 

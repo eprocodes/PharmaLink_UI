@@ -75,19 +75,19 @@ import { Subject, takeUntil } from 'rxjs';
       position: fixed;
       top: 64px;
       left: 0;
-      bottom: 0;
+      height: calc(100vh - 64px);
       width: 254px;
       background: white;
       border-right: 1px solid #e5e7eb;
-      transition: all 0.3s ease;
-      z-index: 100;
       display: flex;
       flex-direction: column;
+      transition: width 0.3s ease;
+      z-index: 100;
+      overflow: hidden;
 
       &.collapsed {
         width: 64px;
-
-        .nav-item {
+           .nav-item {
           padding: 12px;
           justify-content: center;
 
@@ -97,7 +97,6 @@ import { Subject, takeUntil } from 'rxjs';
         }
       }
     }
-
 
     .collapse-btn {
       position: absolute;
@@ -140,10 +139,9 @@ position: absolute;
     .nav-menu {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 0;
+      padding: 50px 0 16px 0;
       position: relative;
-      padding-top: 50px;
-    }
+          }
 
     .nav-group {
       margin-bottom: 24px;

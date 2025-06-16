@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarService } from './services/sidebar.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,58 +12,36 @@ import { Subject, takeUntil } from 'rxjs';
   imports: [CommonModule, RouterModule, HeaderComponent, SidebarComponent],
   template: `
     <app-header></app-header>
-    <div class="main-content">
+    <div class="app-container" [class.sidebar-collapsed]="isCollapsed$ | async">
       <app-sidebar></app-sidebar>
-      <div class="content" [class.sidebar-collapsed]="isCollapsed">
+      <main class="main-content">
         <router-outlet></router-outlet>
-      </div>
+      </main>
     </div>
   `,
   styles: [`
-    :host {
-      display: block;
+    .app-container {
+      display: flex;
       min-height: 100vh;
-      background: #f8f9fa;
     }
 
     .main-content {
-      display: flex;
-      min-height: calc(100vh - 64px);
-    }
-
-    .content {
       flex: 1;
       transition: margin-left 0.3s ease;
-      &.sidebar-collapsed {
-        margin-left: 64px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .content {
-        margin-left: 0;
-        padding: 16px;
-
-        &.sidebar-collapsed {
-          margin-left: 0;
-        }
-      }
     }
   `]
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'PharmaLink';
-  isCollapsed = false;
+  isCollapsed$: Observable<boolean>;
   private destroy$ = new Subject<void>();
 
-  constructor(private sidebarService: SidebarService) {}
+  constructor(private sidebarService: SidebarService) {
+    this.isCollapsed$ = this.sidebarService.isCollapsed$;
+  }
 
   ngOnInit() {
-    this.sidebarService.isCollapsed$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(collapsed => {
-        this.isCollapsed = collapsed;
-      });
+    // Any additional initialization if needed
   }
 
   ngOnDestroy() {

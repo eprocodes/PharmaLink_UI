@@ -111,7 +111,7 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
     }
 
     .page-header {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
 
       .header-left {
         display: flex;

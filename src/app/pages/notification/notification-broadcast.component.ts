@@ -62,6 +62,17 @@ interface Customer {
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Title</mat-label>
+                <input matInput formControlName="title" placeholder="Enter notification title">
+                <mat-error *ngIf="broadcastForm.get('title')?.hasError('required')">
+                  Title is required
+                </mat-error>
+                <mat-error *ngIf="broadcastForm.get('title')?.hasError('maxlength')">
+                  Title cannot exceed 100 characters
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Message</mat-label>
                 <textarea matInput formControlName="message" 
                           placeholder="Enter your message here"
@@ -95,15 +106,13 @@ interface Customer {
 
     .main-content {
       display: flex;
-      padding-top: 64px;
+      
       min-height: calc(100vh - 64px);
       background-color: #f8f9fa;
     }
 
     .content {
       flex: 1;
-      margin-left: 254px;
-      padding: 24px;
       box-sizing: border-box;
       max-width: calc(100vw - 254px);
       overflow-x: hidden;
@@ -195,6 +204,7 @@ export class NotificationBroadcastComponent implements OnInit {
   constructor(private fb: FormBuilder) {
     this.broadcastForm = this.fb.group({
       customers: [[], [Validators.required]],
+      title: ['', [Validators.required, Validators.maxLength(100)]],
       message: ['', [Validators.required, Validators.maxLength(500)]]
     });
   }
@@ -210,6 +220,7 @@ export class NotificationBroadcastComponent implements OnInit {
       setTimeout(() => {
         console.log('Broadcasting message:', {
           customers: this.broadcastForm.value.customers,
+          title: this.broadcastForm.value.title,
           message: this.broadcastForm.value.message
         });
         this.isLoading = false;

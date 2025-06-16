@@ -153,15 +153,13 @@ import { RouterModule } from '@angular/router';
 
     .main-content {
       display: flex;
-      padding-top: 64px;
+      
       min-height: calc(100vh - 64px);
       background-color: #f8f9fa;
     }
 
     .content {
       flex: 1;
-      margin-left: 254px;
-      padding: 24px;
       box-sizing: border-box;
       max-width: calc(100vw - 254px);
       overflow-x: hidden;

@@ -142,7 +142,7 @@ interface Medicine {
 
     .main-content {
       display: flex;
-      padding-top: 64px;
+      
       min-height: calc(100vh - 64px);
       background-color: #f8f9fa;
     }

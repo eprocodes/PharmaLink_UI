@@ -107,7 +107,7 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 
     .main-content {
       display: flex;
-      padding-top: 64px;
+      
       min-height: 100vh;
       background-color: #f8f9fa;
     }

@@ -11,7 +11,6 @@ import { OrderDetailsComponent } from './pages/orders/order-details/order-detail
 import { ProfileComponent } from './pages/profile/profile.component';
 import { EditProfileComponent } from './pages/profile/edit-profile.component';
 import { ChangePasswordComponent } from './pages/profile/change-password.component';
-import { GeneralComponent } from './pages/settings/general/general.component';
 import { CustomerDetailsComponent } from './pages/customers/customer-details/customer-details.component';
 import { EditCustomerComponent } from './pages/customers/edit-customer/edit-customer.component';
 import { DeliveryTrackerComponent } from './pages/delivery/delivery-tracker/delivery-tracker.component';
@@ -50,7 +49,6 @@ export const routes: Routes = [
   { path: 'profile/edit', component: EditProfileComponent },
   { path: 'profile/change-password', component: ChangePasswordComponent },
   { path: 'subscription', component: SubscriptionComponent },
-  { path: 'settings/general', component: GeneralComponent },
   { path: 'delivery/tracker', component: DeliveryTrackerComponent },
   { path: 'tickets/open', component: OpenTicketComponent },
   { path: 'notification/broadcast', component: NotificationBroadcastComponent },

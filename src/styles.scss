@@ -1,0 +1,113 @@
+/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use '@angular/material/prebuilt-themes/indigo-pink.css';
+
+$custom-primary: (
+  50: #e0f2f1,
+  100: #b2dfdb,
+  200: #80cbc4,
+  300: #4db6ac,
+  400: #26a69a,
+  500: #009688,
+  600: #00897b,
+  700: #0B6E4F,
+  800: #00695c,
+  900: #004d40,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Define the theme
+$app-primary: mat.define-palette($custom-primary, 700);
+$app-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+$app-warn: mat.define-palette(mat.$red-palette);
+
+$app-theme: mat.define-light-theme((
+  color: (
+    primary: $app-primary,
+    accent: $app-accent,
+    warn: $app-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+// Apply the theme
+@include mat.all-component-themes($app-theme);
+
+// Global styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+}
+
+body {
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Custom Material overrides
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-form-field-wrapper {
+  background-color: #f9fafb;
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: #f9fafb !important;
+}
+
+.mat-mdc-form-field-flex {
+  background-color: #f9fafb !important;
+}
+
+.mat-mdc-form-field-infix {
+  min-height: unset !important;
+}
+
+textarea.mat-mdc-input-element {
+  resize: none;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background-color: #0B6E4F !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-ripple {
+  background-color: #0B6E4F !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: #0B6E4F !important;
+}
+
+.content{
+margin-left: 15px;
+margin-top: 40px;
+}

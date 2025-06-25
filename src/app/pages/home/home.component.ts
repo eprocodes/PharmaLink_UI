@@ -10,12 +10,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
-import { HeaderComponent } from '../../components/header/header.component';
-import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { HeaderComponent } from '../../components/header/header.component';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+
 
 interface Customer {
   id: string;
@@ -39,11 +40,11 @@ interface Customer {
     MatInputModule,
     NgxChartsModule,
     HeaderComponent,
-    SidebarComponent,
     MatDatepickerModule,
     MatNativeDateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SidebarComponent
   ],
   template: `
     <app-header></app-header>
@@ -176,12 +177,11 @@ interface Customer {
 
     .main-content {
       display: flex;
-      
       min-height: 100vh;
       background-color: #f8f9fa;
     }
 
-     .content {
+    .content {
       flex: 1;
       margin-left: 245px;
       margin-top: 55px;
@@ -194,7 +194,8 @@ interface Customer {
         margin-left: 55px;
         max-width: calc(100vw - 55px);
       }
-  }
+    }
+
     .container {
       max-width: 100%;
       width: 100%;
@@ -403,14 +404,19 @@ interface Customer {
 })
 export class HomeComponent implements OnInit {
   filterForm: FormGroup;
+  // isCollapsed$: Observable<boolean>;
   originalCustomerGrowthData: any[];
   originalOrderComparisonPieData: any[];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    // private sidebarService: SidebarService
+  ) {
     this.filterForm = this.fb.group({
-      startDate: [null],
-      endDate: [null]
+      startDate: [''],
+      endDate: ['']
     });
+    // this.isCollapsed$ = this.sidebarService.isCollapsed$;
 
     // Store original data
     this.originalCustomerGrowthData = this.customerGrowthData;
@@ -501,6 +507,7 @@ export class HomeComponent implements OnInit {
   };
 
   ngOnInit() {
-    // Any initialization logic
+    // Ensure sidebar is collapsed by default
+    // this.sidebarService.setCollapsed(true);
   }
 }

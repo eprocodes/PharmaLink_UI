@@ -139,7 +139,7 @@ position: absolute;
     .nav-menu {
       flex: 1;
       overflow-y: auto;
-      padding: 50px 0 16px 0;
+      padding: 45px 0 16px 0;
       position: relative;
           }
 

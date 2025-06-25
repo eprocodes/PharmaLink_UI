@@ -11,9 +11,9 @@ import { Subject, takeUntil, Observable } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterModule, HeaderComponent, SidebarComponent],
   template: `
-    <app-header></app-header>
+
     <div class="app-container" [class.sidebar-collapsed]="isCollapsed$ | async">
-      <app-sidebar></app-sidebar>
+
       <main class="main-content">
         <router-outlet></router-outlet>
       </main>
